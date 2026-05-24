@@ -1,0 +1,31 @@
+
+### clear cache
+GET https://park-clinic-api.local/api/clear
+
+### Post Contact
+POST https://park-clinic-api.local/api/contact
+Content-Type: application/json
+
+{
+    "name": "John Doe",
+    "email": "johndoe@example.com",
+    "subject": "I'm interested in your clinic",
+    "message": "Hello, I'm interested in your clinic."
+}
+
+### List all contact messages (Admin)
+GET https://park-clinic-api.local/api/admin/contacts
+
+### Get single contact message and mark as read (Admin)
+GET https://park-clinic-api.local/api/admin/contacts/1
+
+### Mark message as unread (Admin)
+PATCH https://park-clinic-api.local/api/admin/contacts/1/unread
+Content-Type: application/json
+
+### Mark message as read (Admin)
+PATCH https://park-clinic-api.local/api/admin/contacts/1/read
+Content-Type: application/json
+
+### Delete contact message (Admin)
+DELETE https://park-clinic-api.local/api/admin/contacts/1
