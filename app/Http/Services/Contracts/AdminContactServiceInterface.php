@@ -34,10 +34,19 @@ interface AdminContactServiceInterface
     public function markAsUnread(ContactMessage $contact): ContactMessage;
 
     /**
-     * Delete a contact message.
+     * Toggle the importance status of a contact message.
      *
      * @param ContactMessage $contact
-     * @return bool|null
+     * @return ContactMessage
      */
-    public function deleteMessage(ContactMessage $contact): ?bool;
+    public function toggleImportant(ContactMessage $contact): ContactMessage;
+
+    /**
+     * Reply to a contact message.
+     *
+     * @param ContactMessage $contact
+     * @param string $message
+     * @return ContactMessage
+     */
+    public function reply(ContactMessage $contact, string $message): ContactMessage;
 }

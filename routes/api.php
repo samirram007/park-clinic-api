@@ -45,6 +45,8 @@ Route::prefix('admin')->middleware('jwt.cookies')->group(function () {
     Route::get('/contacts/{contact}', [\App\Http\Controllers\Api\Admin\ContactController::class, 'show']);
     Route::patch('/contacts/{contact}/read', [\App\Http\Controllers\Api\Admin\ContactController::class, 'markAsRead']);
     Route::patch('/contacts/{contact}/unread', [\App\Http\Controllers\Api\Admin\ContactController::class, 'markAsUnread']);
+    Route::patch('/contacts/{contact}/important', [\App\Http\Controllers\Api\Admin\ContactController::class, 'toggleImportant']);
+    Route::post('/contacts/{contact}/reply', [\App\Http\Controllers\Api\Admin\ContactController::class, 'reply']);
     Route::delete('/contacts/{contact}', [\App\Http\Controllers\Api\Admin\ContactController::class, 'destroy']);
 });
 

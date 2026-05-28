@@ -26,10 +26,25 @@ class ContactController extends Controller
         $perPage = $request->query('per_page', 10);
         $status = $request->query('status');
         $search = $request->query('search');
+        $isImportant = $request->has('important') ? $request->boolean('important') : null;
 
-        $messages = $this->service->getPaginatedMessages((int)$perPage, $status, $search);
+        $messages = $this->service->getPaginatedMessages((int)$perPage, $status, $search, $isImportant);
 
         return new ContactMessageCollection($messages);
+    }
+
+    /**
+     * Toggle the importance status of the message.
+     */
+    public function toggleImportant(ContactMessage $contact)
+    {
+        $message = $this->service->toggleImportant($contact);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Status updated successfully.',
+            'data' => new ContactMessageResource($message)
+        ]);
     }
 
 
@@ -70,6 +85,20 @@ class ContactController extends Controller
             'success' => true,
             'message' => 'Message marked as unread.',
             'data' => new ContactMessageResource($contact)
+        ]);
+    }
+
+    /**
+     * Reply to the contact message.
+     */
+    public function reply(\App\Http\Requests\ReplyRequest $request, ContactMessage $contact)
+    {
+        $message = $this->service->reply($contact, $request->validated()['reply_message']);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Message replied successfully.',
+            'data' => new ContactMessageResource($message)
         ]);
     }
 

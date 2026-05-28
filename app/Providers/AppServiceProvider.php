@@ -28,6 +28,13 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        // Fix for Carbon 3.x "Undefined array key" error
+        $locale = config('app.locale', 'en');
+        \Carbon\Carbon::getTranslator()->setMessages($locale, []);
+
+        $fallback = config('app.fallback_locale', 'en');
+        if ($fallback !== $locale) {
+            \Carbon\Carbon::getTranslator()->setMessages($fallback, []);
+        }
     }
 }

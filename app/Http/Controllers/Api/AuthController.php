@@ -50,7 +50,13 @@ class AuthController extends Controller
             'None'
         );
 
-        return response()->json(['message' => 'Logout successful'])
+        return response()->json(
+            [
+                'message' => 'Logout successful',
+                'expires_in' => config('jwt.ttl') * 60,
+                'token' => ''
+            ]
+        )
             ->withCookie($cookie);
     }
 
@@ -107,7 +113,10 @@ class AuthController extends Controller
         Log::info(' cookie', ['cookie' => $cookie]);
 
         return response()->json([
-            // 'token' => $token,
+            'token' => $token,
+            'tokenType' => 'bearer',
+            'expiresIn' => config('jwt.ttl') * 60,
+            'success' => true,
             'status' => 'success',
             'message' => $message,
         ])->withCookie($cookie);
