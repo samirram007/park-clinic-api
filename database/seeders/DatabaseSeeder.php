@@ -15,11 +15,15 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // User::factory(10)->create();
+        // Truncate to prevent duplicate records on re-seed
+        User::truncate();
 
         User::factory()->create([
             'name' => 'Test User',
             'email' => 'test@example.com',
         ]);
+
+        $this->call(DoctorSeeder::class);
+        $this->call(JobPostAndApplicationSeeder::class);
     }
 }

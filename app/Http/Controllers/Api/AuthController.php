@@ -79,7 +79,12 @@ class AuthController extends Controller
 
             return response()->json([
                 'message' => 'Token refreshed',
-                'expires_in' => config('jwt.ttl') * 60
+                'expires_in' => config('jwt.ttl') * 60,
+                'token' => $token,
+                'success' => true,
+                'status' => 'success',
+                'message' => 'Token refreshed',
+
             ])->withCookie($cookie);
         } catch (Exception $e) {
             return response()->json(['message' => 'Could not refresh token'], 401);

@@ -21,6 +21,7 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(AdminContactServiceInterface::class, AdminContactService::class);
         $this->app->bind(AuthServiceInterface::class, AuthService::class);
         $this->app->bind(\App\Services\Contracts\UserServiceInterface::class, \App\Services\UserService::class);
+        $this->app->bind(\App\Services\Contracts\CareerServiceInterface::class, \App\Services\CareerService::class);
     }
 
     /**
