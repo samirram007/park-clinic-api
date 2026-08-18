@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Message Received — Park Clinic</title>
+    <title>Application Received — Park Clinic</title>
 </head>
 <body style="margin: 0; padding: 0; background-color: #f1f5f9; font-family: 'Roboto', 'Helvetica Neue', Arial, sans-serif; -webkit-font-smoothing: antialiased;">
     <!-- Preview Text -->
-    <p style="display:none;max-height:0;overflow:hidden;mso-hide:all;">Thank you for reaching out to Park Clinic. We've received your message regarding {{ $contactMessage->subject }}.</p>
+    <p style="display:none;max-height:0;overflow:hidden;mso-hide:all;">Thank you for applying for the {{ $careerApplication->position }} position at Park Clinic. We've received your application.</p>
     <!-- Wrapper -->
     <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background-color: #f1f5f9;">
         <tr>
@@ -18,6 +18,7 @@
                     <!-- Header Banner -->
                     <tr>
                         <td style="background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%); padding: 32px 40px; text-align: center;">
+                            <!-- Logo Text -->
                             <table role="presentation" cellpadding="0" cellspacing="0" style="margin: 0 auto;">
                                 <tr>
                                     <td style="padding-right: 12px; vertical-align: middle;">
@@ -47,31 +48,31 @@
                     <tr>
                         <td style="padding: 24px 40px 0;">
                             <h1 style="margin: 0 0 8px; font-family: 'Montserrat', Arial, sans-serif; font-size: 22px; font-weight: 700; color: #1a1a2e; text-align: center;">
-                                Message Received
+                                Application Received
                             </h1>
                             <p style="margin: 0; font-family: 'Roboto', Arial, sans-serif; font-size: 15px; color: #64748b; text-align: center; line-height: 1.6;">
-                                Thank you, <strong style="color: #1a1a2e;">{{ $contactMessage->name }}</strong>
+                                Thank you, <strong style="color: #1a1a2e;">{{ $careerApplication->full_name }}</strong>
                             </p>
                         </td>
                     </tr>
 
-                    <!-- Message Details Card -->
+                    <!-- Application Details Card -->
                     <tr>
                         <td style="padding: 28px 40px 0;">
                             <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background-color: #f8fafc; border: 1px solid #e2e8f0; border-radius: 10px; overflow: hidden;">
-                                <!-- Subject Row -->
+                                <!-- Position Row -->
                                 <tr>
                                     <td style="padding: 16px 20px; border-bottom: 1px solid #e2e8f0;">
-                                        <span style="font-family: 'Roboto', Arial, sans-serif; font-size: 12px; color: #94a3b8; text-transform: uppercase; letter-spacing: 0.8px;">Subject</span><br>
-                                        <span style="font-family: 'Montserrat', Arial, sans-serif; font-size: 15px; font-weight: 600; color: #1a1a2e;">{{ $contactMessage->subject }}</span>
+                                        <span style="font-family: 'Roboto', Arial, sans-serif; font-size: 12px; color: #94a3b8; text-transform: uppercase; letter-spacing: 0.8px;">Position Applied</span><br>
+                                        <span style="font-family: 'Montserrat', Arial, sans-serif; font-size: 15px; font-weight: 600; color: #1a1a2e;">{{ $careerApplication->position }}</span>
                                     </td>
                                 </tr>
                                 <!-- Message Preview -->
-                                @if($contactMessage->message)
+                                @if($careerApplication->message)
                                 <tr>
                                     <td style="padding: 16px 20px;">
-                                        <span style="font-family: 'Roboto', Arial, sans-serif; font-size: 12px; color: #94a3b8; text-transform: uppercase; letter-spacing: 0.8px;">Your Message</span><br>
-                                        <span style="font-family: 'Roboto', Arial, sans-serif; font-size: 14px; color: #475569; line-height: 1.5; font-style: italic;">"{{ \Illuminate\Support\Str::limit($contactMessage->message, 150) }}"</span>
+                                        <span style="font-family: 'Roboto', Arial, sans-serif; font-size: 12px; color: #94a3b8; text-transform: uppercase; letter-spacing: 0.8px;">Your Cover Note</span><br>
+                                        <span style="font-family: 'Roboto', Arial, sans-serif; font-size: 14px; color: #475569; line-height: 1.5; font-style: italic;">"{{ \Illuminate\Support\Str::limit($careerApplication->message, 150) }}"</span>
                                     </td>
                                 </tr>
                                 @endif
@@ -89,31 +90,31 @@
                                 <tr>
                                     <td style="padding: 0 0 12px; vertical-align: top; width: 32px;">
                                         <div style="width: 26px; height: 26px; background-color: #e0f2fe; border-radius: 50%; text-align: center; line-height: 26px;">
-                                            <span style="font-size: 13px;">1</span>
+                                            <span style="font-size: 13px; color: #2a9d9d; font-weight: 700;">1</span>
                                         </div>
                                     </td>
                                     <td style="padding: 2px 0 0 12px;">
-                                        <span style="font-family: 'Roboto', Arial, sans-serif; font-size: 14px; color: #334155; line-height: 1.5;">Our team has received your message and will review it shortly.</span>
+                                        <span style="font-family: 'Roboto', Arial, sans-serif; font-size: 14px; color: #334155; line-height: 1.5;">Our recruitment team will review your application and resume.</span>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td style="padding: 0 0 12px; vertical-align: top; width: 32px;">
                                         <div style="width: 26px; height: 26px; background-color: #e0f2fe; border-radius: 50%; text-align: center; line-height: 26px;">
-                                            <span style="font-size: 13px;">2</span>
+                                            <span style="font-size: 13px; color: #2a9d9d; font-weight: 700;">2</span>
                                         </div>
                                     </td>
                                     <td style="padding: 2px 0 0 12px;">
-                                        <span style="font-family: 'Roboto', Arial, sans-serif; font-size: 14px; color: #334155; line-height: 1.5;">A member of our team will respond to your inquiry as soon as possible.</span>
+                                        <span style="font-family: 'Roboto', Arial, sans-serif; font-size: 14px; color: #334155; line-height: 1.5;">If your qualifications align, we will reach out for the next steps.</span>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td style="padding: 0; vertical-align: top; width: 32px;">
                                         <div style="width: 26px; height: 26px; background-color: #e0f2fe; border-radius: 50%; text-align: center; line-height: 26px;">
-                                            <span style="font-size: 13px;">3</span>
+                                            <span style="font-size: 13px; color: #2a9d9d; font-weight: 700;">3</span>
                                         </div>
                                     </td>
                                     <td style="padding: 2px 0 0 12px;">
-                                        <span style="font-family: 'Roboto', Arial, sans-serif; font-size: 14px; color: #334155; line-height: 1.5;">Check your inbox for our reply.</span>
+                                        <span style="font-family: 'Roboto', Arial, sans-serif; font-size: 14px; color: #334155; line-height: 1.5;">Keep an eye on your inbox and phone for any updates.</span>
                                     </td>
                                 </tr>
                             </table>
@@ -134,8 +135,8 @@
                     <!-- CTA Button -->
                     <tr>
                         <td align="center" style="padding: 24px 40px 0;">
-                            <a href="https://parkclinickolkata.in/contact" target="_blank" style="display: inline-block; padding: 12px 32px; background-color: #2a9d9d; color: #ffffff; font-family: 'Montserrat', Arial, sans-serif; font-size: 14px; font-weight: 600; text-decoration: none; border-radius: 8px; letter-spacing: 0.3px;">
-                                Visit Our Website →
+                            <a href="https://parkclinickolkata.in/careers" target="_blank" style="display: inline-block; padding: 12px 32px; background-color: #2a9d9d; color: #ffffff; font-family: 'Montserrat', Arial, sans-serif; font-size: 14px; font-weight: 600; text-decoration: none; border-radius: 8px; letter-spacing: 0.3px;">
+                                View Open Positions →
                             </a>
                         </td>
                     </tr>
@@ -168,7 +169,7 @@
                                             <a href="tel:+919775992022" style="color: #2a9d9d; text-decoration: none;">+91 9775992022</a> · <a href="mailto:info@parkclinickolkata.com" style="color: #2a9d9d; text-decoration: none;">info@parkclinickolkata.com</a>
                                         </p>
                                         <p style="margin: 0; font-family: 'Roboto', Arial, sans-serif; font-size: 11px; color: #94a3b8;">
-                                            This is an automated response to your inquiry. There is no need to reply to this email.
+                                            This is an automated response. There is no need to reply to this email.
                                         </p>
                                     </td>
                                 </tr>

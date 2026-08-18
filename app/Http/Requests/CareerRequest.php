@@ -25,7 +25,7 @@ class CareerRequest extends FormRequest
             'phone' => ['required', 'string'],
             'position' => ['required', 'string'],
             'message' => ['nullable', 'string'],
-            'resume' => ['required', 'file', 'mimes:pdf,doc,docx', 'max:5120'],
+            'resume' => ['required', 'file', 'mimes:pdf', 'max:5120'],
         ];
     }
 }

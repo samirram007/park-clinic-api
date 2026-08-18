@@ -26,6 +26,8 @@ Route::get('/mail-test', function () {
     return 'Mail Sent';
 })->middleware('jwt.cookies');
 
+Route::get('/settings/chat-widget', [\App\Http\Controllers\Api\SettingsController::class, 'getChatWidget']);
+
 Route::post('/contact', \App\Http\Controllers\Api\ContactController::class);
 Route::post('/career/apply', [\App\Http\Controllers\Api\CareerController::class, 'apply']);
 Route::get('/career/jobs', [\App\Http\Controllers\Api\CareerJobController::class, 'index']);
@@ -55,6 +57,7 @@ Route::prefix('admin')->middleware('jwt.cookies')->group(function () {
     Route::post('/contacts/{contact}/reply', [\App\Http\Controllers\Api\Admin\ContactController::class, 'reply']);
     Route::delete('/contacts/{contact}', [\App\Http\Controllers\Api\Admin\ContactController::class, 'destroy']);
 
+    Route::get('/departments', [\App\Http\Controllers\Api\Admin\DoctorController::class, 'departments']);
     Route::get('/doctors', [\App\Http\Controllers\Api\Admin\DoctorController::class, 'index']);
     Route::post('/doctors', [\App\Http\Controllers\Api\Admin\DoctorController::class, 'store']);
     Route::get('/doctors/{doctor}', [\App\Http\Controllers\Api\Admin\DoctorController::class, 'show']);
@@ -70,6 +73,8 @@ Route::prefix('admin')->middleware('jwt.cookies')->group(function () {
     Route::get('/career-applications', [\App\Http\Controllers\Api\Admin\CareerApplicationController::class, 'index']);
     Route::get('/career-applications/{careerApplication}', [\App\Http\Controllers\Api\Admin\CareerApplicationController::class, 'show']);
     Route::delete('/career-applications/{careerApplication}', [\App\Http\Controllers\Api\Admin\CareerApplicationController::class, 'destroy']);
+
+    Route::put('/settings/chat-widget', [\App\Http\Controllers\Api\SettingsController::class, 'updateChatWidget']);
 });
 
 

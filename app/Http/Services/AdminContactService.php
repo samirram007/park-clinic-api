@@ -3,13 +3,15 @@
 namespace App\Http\Services;
 
 use App\Http\Services\Contracts\AdminContactServiceInterface;
-use App\Models\ContactMessage;
-use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use App\Mail\ContactReplyMail;
-use Illuminate\Support\Facades\Mail;
+use App\Models\ContactMessage;
+use App\Traits\SendsMail;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 
 class AdminContactService implements AdminContactServiceInterface
 {
+    use SendsMail;
+
     public function getPaginatedMessages(?int $perPage = 20, ?string $status = null, ?string $search = null, ?bool $isImportant = null): LengthAwarePaginator
     {
         $query = ContactMessage::query()->latest();
@@ -63,7 +65,7 @@ class AdminContactService implements AdminContactServiceInterface
             'reply_at' => now(),
         ]);
 
-        Mail::to($contact->email)->send(new ContactReplyMail($contact));
+        $this->sendMail(new ContactReplyMail($contact), $contact->email);
 
         return $contact;
     }
@@ -72,4 +74,5 @@ class AdminContactService implements AdminContactServiceInterface
     {
         return $contact->delete();
     }
+
 }

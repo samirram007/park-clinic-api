@@ -117,4 +117,18 @@ return [
 
     'contact_receiver' => env('CONTACT_RECEIVER_EMAIL', env('MAIL_FROM_ADDRESS')),
 
+    /*
+    |--------------------------------------------------------------------------
+    | Queue Mail Sending
+    |--------------------------------------------------------------------------
+    |
+    | When true, mail will be dispatched to the queue for async processing.
+    | When false, mail is sent synchronously during the request.
+    | Recommended: true for production (with a queue worker running),
+    | false for shared hosting where queue workers aren't available.
+    |
+    */
+
+    'queue' => env('MAIL_QUEUE', true),
+
 ];

@@ -2,15 +2,14 @@
 
 namespace App\Mail;
 
-use App\Models\ContactMessage;
+use App\Models\CareerApplication;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
-use Illuminate\Mail\Mailables\Attachment;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 
-class ContactAcknowledgementMail extends Mailable
+class CareerApplicationAcknowledgementMail extends Mailable
 {
     use Queueable, SerializesModels;
 
@@ -18,7 +17,7 @@ class ContactAcknowledgementMail extends Mailable
      * Create a new message instance.
      */
     public function __construct(
-        public ContactMessage $contactMessage
+        public CareerApplication $careerApplication
     ) {}
 
     /**
@@ -27,7 +26,7 @@ class ContactAcknowledgementMail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'We have received your message',
+            subject: 'We received your application — '.$this->careerApplication->position,
         );
     }
 
@@ -37,14 +36,14 @@ class ContactAcknowledgementMail extends Mailable
     public function content(): Content
     {
         return new Content(
-            view: 'emails.acknowledgement',
+            view: 'emails.career-acknowledgement',
         );
     }
 
     /**
      * Get the attachments for the message.
      *
-     * @return array<int, Attachment>
+     * @return array<int, \Illuminate\Mail\Mailables\Attachment>
      */
     public function attachments(): array
     {

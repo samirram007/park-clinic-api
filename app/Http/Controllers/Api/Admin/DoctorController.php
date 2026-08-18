@@ -148,6 +148,25 @@ class DoctorController extends Controller
     }
 
     /**
+     * Get distinct department names from all doctors.
+     */
+    public function departments(): JsonResponse
+    {
+        $departments = Doctor::query()
+            ->whereNotNull('department')
+            ->where('department', '!=', '')
+            ->orderBy('department')
+            ->pluck('department')
+            ->unique()
+            ->values()
+            ->toArray();
+
+        return response()->json([
+            'data' => $departments,
+        ]);
+    }
+
+    /**
      * Upload an image file to the public storage and return the URL path.
      */
     private function uploadImage(\Illuminate\Http\UploadedFile $file): string

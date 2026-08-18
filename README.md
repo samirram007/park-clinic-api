@@ -1,58 +1,248 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Park Clinic — Backend API
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+This is the Laravel backend API for the Park Clinic website. It provides RESTful endpoints for the React frontend and the admin dashboard.
 
-## About Laravel
+## Requirements
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+- **PHP** ^8.3
+- **Composer** (latest)
+- **MariaDB** 10+ (or MySQL 8+)
+- **Node.js** 20+ (for Vite/frontend asset building)
+- **Redis** (optional — for queue driver)
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## Stack
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+| Component | Version |
+|-----------|---------|
+| Laravel | ^13.8 |
+| PHP | ^8.3 |
+| Database | MariaDB |
+| Auth | JWT (`php-open-source-saver/jwt-auth`) + Sanctum |
+| Mail | Queue-based (database driver) |
+| Testing | Pest PHP ^4 |
+| Formatting | Laravel Pint ^1 |
 
-## Learning Laravel
-
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
-
-In addition, [Laracasts](https://laracasts.com) contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
-
-You can also watch bite-sized lessons with real-world projects on [Laravel Learn](https://laravel.com/learn), where you will be guided through building a Laravel application from scratch while learning PHP fundamentals.
-
-## Agentic Development
-
-Laravel's predictable structure and conventions make it ideal for AI coding agents like Claude Code, Cursor, and GitHub Copilot. Install [Laravel Boost](https://laravel.com/docs/ai) to supercharge your AI workflow:
+## Quick Start
 
 ```bash
-composer require laravel/boost --dev
+# Clone the repo, then from the project root:
 
-php artisan boost:install
+# Copy environment file and customize it
+cp .env.example .env
+
+# Install PHP dependencies
+composer install
+
+# Generate app key
+php artisan key:generate
+
+# Create the database and run migrations
+php artisan migrate
+
+# Install & build frontend assets
+npm install && npm run build
+
+# Start the development server
+composer run dev
 ```
 
-Boost provides your agent 15+ tools and skills that help agents build Laravel applications while following best practices.
+Or use the setup shortcut (does it all at once):
 
-## Contributing
+```bash
+composer run setup
+```
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+## Environment Variables
 
-## Code of Conduct
+Key environment variables (configured in `.env`):
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+| Variable | Default | Description |
+|----------|---------|-------------|
+| `DB_DATABASE` | `backend_api` | Database name |
+| `DB_USERNAME` | `root` | Database user |
+| `DB_PASSWORD` | | Database password |
+| `QUEUE_CONNECTION` | `database` | Queue driver (`database`, `redis`, `sync`) |
+| `MAIL_MAILER` | `log` | Mail driver (`smtp`, `log`, `ses`, etc.) |
+| `MAIL_QUEUE` | `true` | Queue mail sending (set `false` for instant send) |
+| `MAIL_FROM_ADDRESS` | `hello@example.com` | Sender email address |
+| `CONTACT_RECEIVER_EMAIL` | (falls back to `MAIL_FROM_ADDRESS`) | Where contact form emails go |
+| `JWT_TTL` | `60` | JWT token TTL in minutes |
 
-## Security Vulnerabilities
+See `.env.example` for the full list.
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+## Development Commands
 
-## License
+Run all commands from the `backend-api/` directory.
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+```bash
+# Start dev server + queue worker + Vite (all at once)
+composer run dev
+
+# Run Pest tests
+composer run test
+
+# Full setup (composer install, .env, key gen, migrate, npm build)
+composer run setup
+
+# Individual Artisan commands
+php artisan serve              # Start Laravel dev server
+php artisan migrate            # Run database migrations
+php artisan queue:listen       # Process queued jobs (mail, etc.)
+php artisan test --compact     # Run tests
+vendor/bin/pint --dirty        # Format modified PHP files
+```
+
+## API Routes
+
+All routes are prefixed with `/api`.
+
+### Public Routes
+
+| Method | URI | Description |
+|--------|-----|-------------|
+| POST | `/api/contact` | Submit a contact form message |
+| POST | `/api/career/apply` | Submit a career application |
+| GET | `/api/career/jobs` | List published job posts |
+| GET | `/api/doctors` | List active doctors |
+| GET | `/api/doctors/{id}` | Get doctor details |
+| GET | `/api/doctors/{id}/image` | Get doctor photo |
+
+### Auth Routes
+
+| Method | URI | Middleware | Description |
+|--------|-----|------------|-------------|
+| POST | `/api/auth/login` | — | Login and get JWT |
+| POST | `/api/auth/logout` | `jwt.cookies` | Logout and invalidate token |
+| POST | `/api/auth/refresh` | `jwt.cookies` | Refresh JWT |
+| GET | `/api/auth/profile` | `jwt.cookies` | Get authenticated user |
+
+### Admin Routes (all require `jwt.cookies` middleware)
+
+**Contact Messages**
+
+| Method | URI | Description |
+|--------|-----|-------------|
+| GET | `/api/admin/contacts` | List contacts (paginated, filterable) |
+| GET | `/api/admin/contacts/{id}` | Get contact details |
+| PATCH | `/api/admin/contacts/{id}/read` | Mark as read |
+| PATCH | `/api/admin/contacts/{id}/unread` | Mark as unread |
+| PATCH | `/api/admin/contacts/{id}/important` | Toggle important flag |
+| POST | `/api/admin/contacts/{id}/reply` | Send a reply email |
+| DELETE | `/api/admin/contacts/{id}` | Delete a contact message |
+
+**Doctors**
+
+| Method | URI | Description |
+|--------|-----|-------------|
+| GET | `/api/admin/doctors` | List all doctors |
+| POST | `/api/admin/doctors` | Create a doctor |
+| GET | `/api/admin/doctors/{id}` | Get doctor details |
+| PUT | `/api/admin/doctors/{id}` | Update a doctor |
+| DELETE | `/api/admin/doctors/{id}` | Delete a doctor |
+
+**Job Posts**
+
+| Method | URI | Description |
+|--------|-----|-------------|
+| GET | `/api/admin/job-posts` | List job posts |
+| POST | `/api/admin/job-posts` | Create a job post |
+| GET | `/api/admin/job-posts/{id}` | Get job post details |
+| PUT | `/api/admin/job-posts/{id}` | Update a job post |
+| DELETE | `/api/admin/job-posts/{id}` | Delete a job post |
+
+**Career Applications**
+
+| Method | URI | Description |
+|--------|-----|-------------|
+| GET | `/api/admin/career-applications` | List career applications |
+| GET | `/api/admin/career-applications/{id}` | Get application details |
+| DELETE | `/api/admin/career-applications/{id}` | Delete an application |
+
+### Contact Messages — Pagination & Filtering
+
+```
+GET /api/admin/contacts?page=1&per_page=10&status=read|unread&search=query
+```
+
+Response format:
+
+```json
+{
+  "data": [...],
+  "meta": {
+    "total": 100,
+    "current_page": 1,
+    "last_page": 10,
+    "per_page": 10
+  }
+}
+```
+
+## Mail
+
+Mail is sent via the queue by default (`QUEUE_CONNECTION=database`).  
+To process queued mail, run:
+
+```bash
+php artisan queue:listen
+```
+
+To send mail synchronously (useful for shared hosting), set `MAIL_QUEUE=false` in your `.env`.
+
+### Mailables
+
+| Mailable | Purpose |
+|----------|---------|
+| `ContactAcknowledgementMail` | Auto-reply to contact form submitter |
+| `ContactMessageMail` | Notifies the clinic about a new contact message |
+| `ContactReplyMail` | Sent when admin replies to a contact message |
+| `CareerApplicationAcknowledgementMail` | Auto-reply to career applicant |
+| `CareerApplicationMail` | Notifies the clinic about a new application |
+
+## Authentication
+
+Authentication uses **JWT** via `php-open-source-saver/jwt-auth`.  
+Tokens are stored in HTTP-only cookies (`jwt.cookies` middleware) for admin routes.
+
+The frontend can also use localStorage-based JWT auth (configured via `VITE_AUTH_STORAGE_TYPE`).
+
+## Testing
+
+```bash
+# Run all tests
+php artisan test --compact
+
+# Run with filter
+php artisan test --compact --filter=ContactTest
+```
+
+This project uses **Pest PHP** for testing. Tests live in `tests/Feature/` and `tests/Unit/`.
+
+## Formatting
+
+Run Laravel Pint to format modified PHP files:
+
+```bash
+vendor/bin/pint --dirty --format agent
+```
+
+## Project Structure
+
+```
+backend-api/
+├── app/
+│   ├── Http/Controllers/Api/    — Public API controllers
+│   ├── Http/Controllers/Api/Admin/ — Admin API controllers
+│   ├── Mail/                     — Mailable classes
+│   ├── Models/                   — Eloquent models
+│   ├── Services/                 — Business logic
+│   ├── Traits/                   — Reusable traits
+│   └── Helpers/                  — Helper classes
+├── config/                       — Configuration files
+├── database/
+│   ├── migrations/               — Schema migrations
+│   └── seeders/                  — Database seeders
+├── routes/
+│   └── api.php                   — All API route definitions
+└── tests/                        — Pest tests
+```

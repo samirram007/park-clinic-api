@@ -29,10 +29,10 @@ class CareerApplicationController extends Controller
 
         $applications = $query->orderBy('created_at', 'desc')->paginate($perPage);
 
-        // Add resume URL to each application
+        // Add resume URL to each application (relative path for proxy compatibility)
         $applications->getCollection()->transform(function ($application) {
             $application->resume_url = $application->resume_path
-                ? \Illuminate\Support\Facades\Storage::url($application->resume_path)
+                ? '/storage/'.$application->resume_path
                 : null;
             return $application;
         });
@@ -54,7 +54,7 @@ class CareerApplicationController extends Controller
     public function show(CareerApplication $careerApplication): JsonResponse
     {
         $careerApplication->resume_url = $careerApplication->resume_path
-            ? \Illuminate\Support\Facades\Storage::url($careerApplication->resume_path)
+            ? '/storage/'.$careerApplication->resume_path
             : null;
 
         return response()->json([
